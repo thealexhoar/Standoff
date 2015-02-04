@@ -1,3 +1,5 @@
+package entities;
+
 import com.haxepunk.graphics.Emitter;
 import com.haxepunk.utils.Ease;
 import com.haxepunk.Entity;
@@ -74,7 +76,7 @@ class Particles extends Entity
 		        	1, 				// ? Duration range
 		        	Ease.quadOut
 		        	);
-		_emitter.setColor("gunshot", 0xFFCF0F, 0x99652a, Ease.quartIn);
+		_emitter.setColor("gunshot", 0xFFCC00, 0xFFCC00, Ease.quartIn);
         _emitter.setAlpha("gunshot");
 		
         graphic = _emitter;

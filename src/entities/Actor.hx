@@ -1,4 +1,4 @@
-package ;
+package entities ;
 import com.haxepunk.debug.Console;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic.TileType;
@@ -11,6 +11,10 @@ import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import com.haxepunk.Graphic;
 import com.haxepunk.HXP;
+
+import globals.InputBuffer;
+import globals.Weapon;
+
 /**
  * ...
  * @author Me
@@ -72,6 +76,7 @@ class Actor extends Entity {
 		aim.relative = true;
 		aim.x = 8;
 		aim.y = 20;
+		aim.scaleX = gun.accuracy / 200.0;
 		
 		armored = armor;
 		
@@ -188,7 +193,7 @@ class Actor extends Entity {
 				directionVector = directionVector * 0.7;
 			}
 			
-			if (InputBuffer.pressed(player, "btn1")) {
+			if (InputBuffer.pressed(player, "btn2")) {
 				shooting = true;
 				aim.visible = true;
 				aimPos = new Vector(x + 8, y + 22);
@@ -241,10 +246,10 @@ class Actor extends Entity {
 	private function adjustAim(moving:Bool = false) {
 		if(!moving){
 			if (InputBuffer.down(player, "left")) {
-				aimAngle += 2;
+				aimAngle += (400.0 / weapon.accuracy);
 			}
 			if (InputBuffer.down(player, "right")) {
-				aimAngle -= 2;
+				aimAngle -= (400.0 / weapon.accuracy);
 			}
 		}
 		aimAngle %= 360;
@@ -283,7 +288,7 @@ class Actor extends Entity {
 			angleAdjust *= 2;
 			angleAdjust -= 1;
 			angleAdjust *= 360 * (angleRads / Math.PI) ;
-			scene.add(new Bullet(bulletX, bulletY, aimAngle + angleAdjust, 10, weapon.damage, weapon.penetration, this));
+			scene.add(new Bullet(bulletX, bulletY, aimAngle + angleAdjust, 10, weapon.damage, weapon.penetration, this,weapon.accuracy));
 			particles.gunShot(bulletX, bulletY, aimAngle);
 			shootSound.play();
 		}

@@ -1,4 +1,4 @@
-package ;
+package globals ;
 import haxe.ds.StringMap;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
@@ -28,6 +28,8 @@ class InputBuffer {
 		playerKeysDown.set("joy4", newStringMap());
 		playerKeysDown.set("joy5", newStringMap());
 		playerKeysDown.set("joy6", newStringMap());
+		playerKeysDown.set("joy7", newStringMap());
+		playerKeysDown.set("joy8", newStringMap());
 		
 		playerKeysPressed.set("keyboard1", newStringMap());
 		playerKeysPressed.set("keyboard2", newStringMap());
@@ -37,6 +39,8 @@ class InputBuffer {
 		playerKeysPressed.set("joy4", newStringMap());
 		playerKeysPressed.set("joy5", newStringMap());
 		playerKeysPressed.set("joy6", newStringMap());
+		playerKeysPressed.set("joy7", newStringMap());
+		playerKeysPressed.set("joy8", newStringMap());
 		
 		playerKeysReleased.set("keyboard1", newStringMap());
 		playerKeysReleased.set("keyboard2", newStringMap());
@@ -46,38 +50,23 @@ class InputBuffer {
 		playerKeysReleased.set("joy4", newStringMap());
 		playerKeysReleased.set("joy5", newStringMap());
 		playerKeysReleased.set("joy6", newStringMap());
+		playerKeysReleased.set("joy7", newStringMap());
+		playerKeysReleased.set("joy8", newStringMap());
 	}
 		
 	public static function update() {
 		
+		for (i in playerKeysDown.keys()) {
+			playerKeysDown.set(i, updateDown(playerKeysDown.get(i), i));
+		}
 		
+		for (i in playerKeysPressed.keys()) {
+			playerKeysPressed.set(i, updatePressed(playerKeysPressed.get(i), i));
+		}
 		
-		playerKeysDown.set("keyboard1", updateDown(playerKeysDown.get("keyboard1"), "keyboard1"));
-		playerKeysDown.set("keyboard2", updateDown(playerKeysDown.get("keyboard2"), "keyboard2"));
-		playerKeysDown.set("joy1", updateDown(playerKeysDown.get("joy1"), "joy1"));
-		playerKeysDown.set("joy2", updateDown(playerKeysDown.get("joy2"), "joy2"));
-		playerKeysDown.set("joy3", updateDown(playerKeysDown.get("joy3"), "joy3"));
-		playerKeysDown.set("joy4", updateDown(playerKeysDown.get("joy4"), "joy4"));
-		playerKeysDown.set("joy5", updateDown(playerKeysDown.get("joy5"), "joy5"));
-		playerKeysDown.set("joy6", updateDown(playerKeysDown.get("joy6"), "joy6"));
-		
-		playerKeysPressed.set("keyboard1", updatePressed(playerKeysPressed.get("keyboard1"), "keyboard1"));
-		playerKeysPressed.set("keyboard2", updatePressed(playerKeysPressed.get("keyboard2"), "keyboard2"));
-		playerKeysPressed.set("joy1", updatePressed(playerKeysPressed.get("joy1"), "joy1"));
-		playerKeysPressed.set("joy2", updatePressed(playerKeysPressed.get("joy2"), "joy2"));
-		playerKeysPressed.set("joy3", updatePressed(playerKeysPressed.get("joy3"), "joy3"));
-		playerKeysPressed.set("joy4", updatePressed(playerKeysPressed.get("joy4"), "joy4"));
-		playerKeysPressed.set("joy5", updatePressed(playerKeysPressed.get("joy5"), "joy5"));
-		playerKeysPressed.set("joy6", updatePressed(playerKeysPressed.get("joy6"), "joy6"));
-		
-		playerKeysReleased.set("keyboard1", updateReleased(playerKeysReleased.get("keyboard1"), "keyboard1"));
-		playerKeysReleased.set("keyboard2", updateReleased(playerKeysReleased.get("keyboard2"), "keyboard2"));
-		playerKeysReleased.set("joy1", updateReleased(playerKeysReleased.get("joy1"), "joy1"));
-		playerKeysReleased.set("joy2", updateReleased(playerKeysReleased.get("joy2"), "joy2"));
-		playerKeysReleased.set("joy3", updateReleased(playerKeysReleased.get("joy3"), "joy3"));
-		playerKeysReleased.set("joy4", updateReleased(playerKeysReleased.get("joy4"), "joy4"));
-		playerKeysReleased.set("joy5", updateReleased(playerKeysReleased.get("joy5"), "joy5"));
-		playerKeysReleased.set("joy6", updateReleased(playerKeysReleased.get("joy6"), "joy6"));
+		for (i in playerKeysReleased.keys()) {
+			playerKeysReleased.set(i, updateReleased(playerKeysReleased.get(i), i));
+		}
 	
 	}
 	public static function down(player:String, control:String):Bool {
@@ -171,6 +160,24 @@ class InputBuffer {
 				map.set("btn2", Input.joystick(2).check(XBOX_GAMEPAD.RB_BUTTON));
 				map.set("btn3", Input.joystick(2).check(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
 				
+			case "joy7":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) < -0.6);
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) > 0.6);
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) < -0.6);
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) > 0.6);
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_TRIGGER) > 0.5);
+				map.set("btn2", Input.joystick(3).check(XBOX_GAMEPAD.LB_BUTTON));
+				map.set("btn3", Input.joystick(3).check(XBOX_GAMEPAD.LEFT_ANALOGUE_BUTTON));
+			
+			case "joy8":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) < -0.6);
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) > 0.6);
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) < -0.6);
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) > 0.6);
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_TRIGGER) > 0.5);
+				map.set("btn2", Input.joystick(3).check(XBOX_GAMEPAD.RB_BUTTON));
+				map.set("btn3", Input.joystick(3).check(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
+				
 		}
 		return map;
 	}
@@ -247,7 +254,24 @@ class InputBuffer {
 				map.set("right", Input.joystick(2).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) > 0.6 && !map.get("right"));
 				map.set("btn1", Input.joystick(2).getAxis(XBOX_GAMEPAD.RIGHT_TRIGGER) > 0.5);
 				map.set("btn2", Input.joystick(2).pressed(XBOX_GAMEPAD.RB_BUTTON));
-				map.set("btn3", Input.joystick(2).pressed(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
+				
+			case "joy7":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) < -0.6 && !map.get("up"));
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) > 0.6 && !map.get("down"));
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) < -0.6 && !map.get("left"));
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) > 0.6 && !map.get("right"));
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_TRIGGER) > 0.5);
+				map.set("btn2", Input.joystick(3).pressed(XBOX_GAMEPAD.LB_BUTTON));
+				map.set("btn3", Input.joystick(3).pressed(XBOX_GAMEPAD.LEFT_ANALOGUE_BUTTON));
+			
+			case "joy8":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) < -0.6 && !map.get("up"));
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) > 0.6 && !map.get("down"));
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) < -0.6 && !map.get("left"));
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) > 0.6 && !map.get("right"));
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_TRIGGER) > 0.5);
+				map.set("btn2", Input.joystick(3).pressed(XBOX_GAMEPAD.RB_BUTTON));
+				map.set("btn3", Input.joystick(3).pressed(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
 		}
 		return map;
 	}
@@ -325,6 +349,24 @@ class InputBuffer {
 				map.set("btn1", Input.joystick(2).getAxis(XBOX_GAMEPAD.RIGHT_TRIGGER) < 0.5);
 				map.set("btn2", Input.joystick(2).released(XBOX_GAMEPAD.RB_BUTTON));
 				map.set("btn3", Input.joystick(2).released(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
+				
+			case "joy7":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) > -0.6 && map.get("up"));
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_Y) < 0.6 && map.get("down"));
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) > -0.6 && map.get("left"));
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_ANALOGUE_X) < 0.6 && map.get("right"));
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.LEFT_TRIGGER) < 0.5);
+				map.set("btn2", Input.joystick(3).released(XBOX_GAMEPAD.LB_BUTTON));
+				map.set("btn3", Input.joystick(3).released(XBOX_GAMEPAD.LEFT_ANALOGUE_BUTTON));
+			
+			case "joy8":
+				map.set("up", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) > -0.6 && map.get("up"));
+				map.set("down", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_Y) < 0.6 && map.get("down"));
+				map.set("left", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) > -0.6 && map.get("left"));
+				map.set("right", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_ANALOGUE_X) < 0.6 && map.get("right"));
+				map.set("btn1", Input.joystick(3).getAxis(XBOX_GAMEPAD.RIGHT_TRIGGER) < 0.5);
+				map.set("btn2", Input.joystick(3).released(XBOX_GAMEPAD.RB_BUTTON));
+				map.set("btn3", Input.joystick(3).released(XBOX_GAMEPAD.RIGHT_ANALOGUE_BUTTON));
 		}
 		return map;
 	}

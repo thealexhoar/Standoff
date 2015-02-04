@@ -1,4 +1,4 @@
-package ;
+package globals ;
 
 /**
  * ...
@@ -20,7 +20,7 @@ class Weapon {
 	public var reloadDelay:Int;
 	public var accuracy:Int;
 	public var penetration:Int;
-	
+	public var velocity:Float;
 	public var bulletCount:Int;
 	
 
@@ -38,8 +38,9 @@ class Weapon {
 		w.rightPosX = 12;
 		w.rightPosY = 21;
 		
+		w.velocity = 12;
 		w.damage = 35;
-		w.accuracy = 100;
+		w.accuracy = 200;
 		w.ammo = 8;
 		w.reloadDelay = 60;
 		w.fireDelay = 20;
@@ -48,6 +49,29 @@ class Weapon {
 		
 		return w;
 	}
+	
+	public static function rifle():Weapon {
+		var w:Weapon = new Weapon();
+		w.name = "Rifle";
+		w.originX = 9;
+		w.originY = 2;
+		w.leftPosX = 5;
+		w.leftPosY = 21;
+		w.rightPosX = 12;
+		w.rightPosY = 21;
+		
+		w.velocity = 10;
+		w.damage = 100;
+		w.accuracy = 500;
+		w.ammo = 3;
+		w.reloadDelay = 70;
+		w.fireDelay = 40;
+		w.bulletCount = 1;
+		w.penetration = 12;
+		
+		return w;
+	}
+	
 	public static function sawnoff():Weapon {
 		var w:Weapon = new Weapon();
 		w.name = "Sawnoff";
@@ -58,9 +82,9 @@ class Weapon {
 		w.rightPosX = 12;
 		w.rightPosY = 21;
 		
-		w.damage = 6;
-		w.damage = 6;
-		w.accuracy = 50;
+		w.velocity = 10;
+		w.damage = 20;
+		w.accuracy = 80;
 		w.ammo = 2;
 		w.reloadDelay = 120;
 		w.fireDelay = 10;

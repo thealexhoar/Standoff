@@ -1,4 +1,4 @@
-package ;
+package entities ;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
@@ -26,25 +26,31 @@ class Bullet extends Entity {
 	
 	var immunity:Array<Entity>;
 	
-	var lifetime = 0;
+	var lifetime:Int = 0;
 	
 	var deathSound:Sfx;
+	var velocity:Float;
+	var range:Int;
 	
 
-	public function new(initialX:Float, initialY:Float, angle:Float, velocity:Float, damage:Int, pen:Int, firingActor:Actor) {
+	public function new(initialX:Float, initialY:Float, angle:Float, velocity:Float, damage:Int, pen:Int, firingActor:Actor, range:Int) {
 		sprite = new Image("graphics/basepixel.png");
 		this.angle = -1 * angle;
 		var angleR:Float = this.angle / 180 * Math.PI;
 		velocityX = Math.cos(angleR) * velocity;
 		velocityY = Math.sin(angleR) * velocity;
-		sprite.color = 0xFFCC00;
+		sprite.color = 0xFFF3BA;
 		sprite.angle = -1 * this.angle + 180;
 		
 		currentLength = 0;
 		maxLength = Std.int(velocity * 2);
 		
+		this.range = range;
+		
 		immunity = new Array<Entity>();
 		immunity.push(firingActor);
+		
+		this.velocity = velocity;
 		
 		this.damage = damage;
 		
@@ -66,6 +72,10 @@ class Bullet extends Entity {
 		if (lifetime >= 2000) {
 			destroy();
 		}
+		else if (lifetime * velocity > range) {
+			damage = Std.int(damage * range / (lifetime * velocity));
+		}
+		
 		if (lengthChanging) {
 			currentLength += 2 * lengthDirection;
 			sprite.scaleX = currentLength;
