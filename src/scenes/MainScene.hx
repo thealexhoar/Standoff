@@ -6,6 +6,7 @@ import com.haxepunk.HXP;
 import entities.Background;
 import entities.Actor;
 import entities.Block;
+import entities.QuarterBlock;
 import entities.Particles;
 import globals.InputBuffer;
 import globals.Weapon;
@@ -35,7 +36,8 @@ class MainScene extends Scene
 			}
 		}
 		
-		loadFromArray(LevelGeneration.generateTestLevel());
+		//loadFromArray(LevelGeneration.generateTestLevel());
+		loadFromArrayQuarter(LevelGeneration.generateTestLevelQuarter());
 	}
 	 
 	private function loadFromArray(grid:Array<Array<Int>>) {
@@ -43,6 +45,16 @@ class MainScene extends Scene
 			for (y in 0... grid[0].length) {
 				if (grid[x][y] == 1) {
 					add(new Block(x * 32, y * 32, p));
+				}
+			}
+		}
+	}
+	
+	private function loadFromArrayQuarter(grid:Array<Array<Int>>) {
+		for (x in 0... grid.length) {
+			for (y in 0... grid[0].length) {
+				if (grid[x][y] == 1) {
+					add(new QuarterBlock(x * 8, y * 8, p));
 				}
 			}
 		}

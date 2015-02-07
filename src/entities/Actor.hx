@@ -28,7 +28,7 @@ class Actor extends Entity {
 	var sprite:Spritemap;
 	var images:Graphiclist;
 	var directionVector:Vector;
-	var directionMagnitude:Float = 0.9;
+	var directionMagnitude:Float = 1.1;
 	var velocityVector:Vector;
 	
 	var shooting:Bool = false;
@@ -127,13 +127,14 @@ class Actor extends Entity {
 	}
 	
 	public function hit(damage:Float, bulletX:Float, bulletY:Float, angle:Float) {
+		
 		if(armored){
 			health -= damage * 0.7;
 			scene.add(new Bloodstain(bulletX, bulletY, angle, damage * 0.3, false)); 
 		}
 		else {
 			health -= damage;
-			scene.add(new Bloodstain(bulletX, bulletY + 8, angle, damage, false)); 
+			scene.add(new Bloodstain(bulletX, bulletY, angle, damage, false)); 
 		}
 		healthBar.scaleX = health / 4.0;
 		particles.bloodSpatter(bulletX, bulletY, angle);
@@ -168,10 +169,10 @@ class Actor extends Entity {
 					reloading = true;
 				}
 				else if (timeSinceLastShot >= weapon.fireDelay) {
-					timeSinceLastShot = 0;
 					shoot();
 					ammoCount--;
 					reloadDelay = weapon.reloadDelay;
+					timeSinceLastShot = 0;
 				}
 			}
 		}
@@ -208,7 +209,7 @@ class Actor extends Entity {
 			}
 			adjustAim(true);
 			
-			if (InputBuffer.down(player, "btn1")) {
+			if (InputBuffer.down(player, "btn1") && weapon.fireWhileMoving) {
 				if (ammoCount == 0) {
 					reloading = true;
 				}
@@ -224,7 +225,7 @@ class Actor extends Entity {
 	
 	private function movePlayer():Void {
 		velocityVector = directionVector * directionMagnitude;
-		moveBy(velocityVector.x, velocityVector.y, "block");
+		moveBy(velocityVector.x, velocityVector.y, ["block", "quarterblock"]);
 	}
 	
 	private function updateAnimation():Void {
@@ -246,10 +247,10 @@ class Actor extends Entity {
 	private function adjustAim(moving:Bool = false) {
 		if(!moving){
 			if (InputBuffer.down(player, "left")) {
-				aimAngle += (400.0 / weapon.accuracy);
+				aimAngle += (50000.0 / (weapon.accuracy * weapon.accuracy));
 			}
 			if (InputBuffer.down(player, "right")) {
-				aimAngle -= (400.0 / weapon.accuracy);
+				aimAngle -= (50000.0 / (weapon.accuracy * weapon.accuracy));
 			}
 		}
 		aimAngle %= 360;
@@ -280,11 +281,22 @@ class Actor extends Entity {
 		}
 		else {
 			bulletX = weapon.leftPosX + x;
-			bulletY = weapon.leftPosY + y;
+			bulletY = weapon.leftPosY + y; 
 		}
 		for (i in 0... weapon.bulletCount) {
+			var bonusAccuracy:Int;
+			
+			if (timeSinceLastShot * 2 < weapon.accuracy) {
+				bonusAccuracy = timeSinceLastShot * 2 - weapon.fireDelay * 2;
+			}
+			else {
+				bonusAccuracy = weapon.accuracy;
+			}
+			trace(weapon.accuracy + bonusAccuracy);
 			var angleAdjust:Float = Math.random();
-			var angleRads:Float = Math.atan(5 / (weapon.accuracy * accuracy));
+			var angleRads:Float = Math.atan(5 / ((weapon.accuracy + bonusAccuracy) * accuracy));
+			
+			
 			angleAdjust *= 2;
 			angleAdjust -= 1;
 			angleAdjust *= 360 * (angleRads / Math.PI) ;

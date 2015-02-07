@@ -122,6 +122,15 @@ class Bullet extends Entity {
 				if (penetration <= 0) { destroyCycle(); }
 			}
 		}
+		if (collide("quarterblock", x, y) != null) {
+			var b:QuarterBlock = cast(collide("quarterblock", x, y), QuarterBlock);
+			if (Lambda.indexOf(immunity, b) < 0) {
+				immunity.push(b);
+				b.hit(x,y);
+				penetration-=2;
+				if (penetration <= 0) { destroyCycle(); }
+			}
+		}
 		
 	}
 	

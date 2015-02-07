@@ -24,42 +24,56 @@ class MenuScene extends Scene{
 		
 		p = new PlayerProfile();
 		p.color = 0xff0000;
-		p.inputString = "keyboard1";
-		c = new ControllerEntity(280, 100, p, true);
+		p.inputString = "joy1";
+		c = new ControllerEntity(280, 75, p, true);
 		controllers.push(c);
 		add(c);
 		
 		p = new PlayerProfile();
 		p.color = 0xff6a00;
-		p.inputString = "keyboard2";
-		c = new ControllerEntity(320, 100, p, false);
+		p.inputString = "joy2";
+		c = new ControllerEntity(320, 75, p, false);
 		controllers.push(c);
 		add(c);
 		
 		p = new PlayerProfile();
 		p.color = 0xffd800;
 		p.inputString = "joy3";
-		c = new ControllerEntity(280, 200, p, true);
+		c = new ControllerEntity(280, 150, p, true);
 		controllers.push(c);
 		add(c);
 		
 		p = new PlayerProfile();
-		p.color = 0x00ff00;
+		p.color = 0x00ffff;
 		p.inputString = "joy4";
-		c = new ControllerEntity(320, 200, p, false);
+		c = new ControllerEntity(320, 150, p, false);
 		controllers.push(c);
 		add(c);
 		
 		p = new PlayerProfile();
-		p.color = 0x0000ff;
+		p.color = 0x0026ff;
 		p.inputString = "joy5";
-		c = new ControllerEntity(280, 300, p, true);
+		c = new ControllerEntity(280, 225, p, true);
 		controllers.push(c);
 		add(c);
 		
 		p = new PlayerProfile();
 		p.color = 0xb200ff;
 		p.inputString = "joy6";
+		c = new ControllerEntity(320, 225, p, false);
+		controllers.push(c);
+		add(c);
+		
+		p = new PlayerProfile();
+		p.color = 0x00ff00;
+		p.inputString = "joy7";
+		c = new ControllerEntity(280, 300, p, true);
+		controllers.push(c);
+		add(c);
+		
+		p = new PlayerProfile();
+		p.color = 0xff00dc;
+		p.inputString = "joy8";
 		c = new ControllerEntity(320, 300, p, false);
 		controllers.push(c);
 		add(c);
@@ -76,7 +90,6 @@ class MenuScene extends Scene{
 			for (x in 0... controllers.length) {
 				var c:ControllerEntity = controllers.pop();
 				if (c.player.faction != "") {
-					trace(c.player.faction);
 					players.push(c.player);
 				}
 			}
